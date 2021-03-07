@@ -125,14 +125,11 @@ int Text::LenShortestLine() {
 	if (rows == 0) return -1;
 	else {
 		int min = text[0].GetLength();
-		int index = 0;
 		for (int i = 1; i < rows; i++) {
-			if (min > text[i].GetLength()) {
+			if (min > text[i].GetLength()) 
 				min = text[i].GetLength();
-				index = i;
-			}
 		}
-		return index;
+		return min;
 	}
 }
 
