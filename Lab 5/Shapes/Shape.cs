@@ -3,11 +3,6 @@ namespace Shapes
 {
     public class Shape
     {
-        public Shape()
-        {
-
-        }
-
         public Shape(Point[]points,int quantityPoints)
         {
             if (points.Length != quantityPoints)

@@ -18,5 +18,21 @@ namespace Shapes
             double square= Math.Sqrt(halfPerimeter*(halfPerimeter- SideLength(points[0], points[1]))*(halfPerimeter- SideLength(points[0], points[2]))*(halfPerimeter- SideLength(points[1], points[2])));
             return square;
         }
+
+        public Point[] Points
+        {
+            get
+            {
+                return points;
+            }
+        }
+
+        public int QuantityPoints
+        {
+            get
+            {
+                return quantityPoints;
+            }
+        }
     }
 }
