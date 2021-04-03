@@ -7,39 +7,26 @@ namespace Shapes
         {
 
         }
-        public Shape(Point[]points)
+
+        public Shape(Point[]points,int quantityPoints)
         {
-            quantityPoints = points.Length;
+            if (points.Length != quantityPoints)
+            {
+                throw new Exception("discrepancy in the number of points");
+            }
+            this.quantityPoints = quantityPoints;
+            this.points = new Point[quantityPoints];
             for(int i = 0; i < quantityPoints; i++)
             {
                 this.points[i] = points[i];
             }
         }
-        public int QuantityPoints
-        {
-            get
-            {
-                if (quantityPoints > 0)
-                {
-                    return quantityPoints;
-                }
-                else
-                {
-                    throw new Exception("quantity of points must be greater than 0");
-                }
-            }
-        }
-        public Point[] Points
-        {
-            get
-            {
-                return points;
-            }
-        }
+
         public double SideLength(in Point left, in Point right)
         {
-            return Math.Sqrt((right.X - left.X) + (right.Y - left.Y));
+            return Math.Sqrt(Math.Pow((right.X - left.X),2) + Math.Pow((right.Y - left.Y),2));
         }
+
         protected int quantityPoints;
         protected Point[] points;
     }
