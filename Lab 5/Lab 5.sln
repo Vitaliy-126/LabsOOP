@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1433
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C-sharp", "C-sharp\C-sharp.csproj", "{4B6093E7-E6C0-405B-8390-3226C4331762}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shapes", "Shapes\Shapes.csproj", "{EA0C1E06-DB85-45B7-86B1-F979D9B9A34F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4B6093E7-E6C0-405B-8390-3226C4331762}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B6093E7-E6C0-405B-8390-3226C4331762}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B6093E7-E6C0-405B-8390-3226C4331762}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B6093E7-E6C0-405B-8390-3226C4331762}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA0C1E06-DB85-45B7-86B1-F979D9B9A34F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA0C1E06-DB85-45B7-86B1-F979D9B9A34F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA0C1E06-DB85-45B7-86B1-F979D9B9A34F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA0C1E06-DB85-45B7-86B1-F979D9B9A34F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F715EDC0-46A3-4B89-BC0E-DB4010A83F4F}
+	EndGlobalSection
+EndGlobal
