@@ -1,28 +1,51 @@
 ﻿using System;
 namespace Shapes
 {
-    public class Shape
+    public abstract class Shape
     {
-        public Shape(Point[]points,int quantityPoints)
+        public Shape(Point[]points,int quantityVertexes)
         {
-            if (points.Length != quantityPoints)
+            if (points.Length != quantityVertexes)
             {
                 throw new Exception("discrepancy in the number of points");
             }
-            this.quantityPoints = quantityPoints;
-            this.points = new Point[quantityPoints];
-            for(int i = 0; i < quantityPoints; i++)
+            this.quantityVertexes = quantityVertexes;
+            this.points = new Point[quantityVertexes];
+            for(int i = 0; i < quantityVertexes; i++)
             {
                 this.points[i] = points[i];
             }
         }
 
-        public double SideLength(in Point left, in Point right)
+        public static double SideLength(in Point left, in Point right)
         {
             return Math.Sqrt(Math.Pow((right.X - left.X),2) + Math.Pow((right.Y - left.Y),2));
         }
 
-        protected int quantityPoints;
+        public abstract double Perimeter();
+        public abstract double Square();
+
+        public int QuantityVertexes()
+        {
+            return quantityVertexes;
+        }
+
+        public Point this[int index]
+        {
+            get
+            {
+                if (index >= 0 && index < quantityVertexes)
+                {
+                    return points[index];
+                }
+                else
+                {
+                    throw new Exception("index out of range");
+                }
+            }
+        }
+
+        protected int quantityVertexes;
         protected Point[] points;
     }
 }

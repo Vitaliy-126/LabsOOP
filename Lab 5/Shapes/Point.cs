@@ -1,27 +1,18 @@
 ﻿namespace Shapes
 {
-    public sealed class Point
+    public class Point
     {
+        public double X { get; private set; }
+        public double Y { get; private set; }
         public Point(double x,double y)
         {
-            this.x = x;
-            this.y = y;
+            X = x;
+            Y = y;
         }
-        public double X
+
+        public override string ToString()
         {
-            get
-            {
-                return x;
-            }
+            return $"({X};{Y})";
         }
-        public double Y
-        {
-            get
-            {
-                return y;
-            }
-        }
-        private double x;
-        private double y;
     }
 }

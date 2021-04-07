@@ -3,36 +3,28 @@ namespace Shapes
 {
     public class Triangle : Shape
     {
+        public double ASide { get; private set; }
+        public double BSide { get; private set; }
+        public double CSide { get; private set; }
         public Triangle(Point[] points) : base(points,3)
         {
-            
+            ASide = SideLength(points[0], points[1]);
+            BSide = SideLength(points[0], points[2]);
+            CSide = SideLength(points[1], points[2]);
+            if (ASide + BSide <= CSide || ASide + CSide <= BSide || BSide + CSide <= ASide)
+            {
+                throw new Exception("such a triangle does not exist");
+            }
         }
-        public double Perimeter()
+        public override double Perimeter()
         {
-            double perimetr = SideLength(points[0], points[1]) + SideLength(points[0], points[2]) + SideLength(points[1], points[2]);
-            return perimetr;
+            return ASide + BSide + CSide;
         }
-        public double Square()
+        public override double Square()
         {
             double halfPerimeter = Perimeter()/2;
-            double square= Math.Sqrt(halfPerimeter*(halfPerimeter- SideLength(points[0], points[1]))*(halfPerimeter- SideLength(points[0], points[2]))*(halfPerimeter- SideLength(points[1], points[2])));
+            double square= Math.Sqrt(halfPerimeter*(halfPerimeter- ASide)*(halfPerimeter- BSide)*(halfPerimeter- CSide));
             return square;
-        }
-
-        public Point[] Points
-        {
-            get
-            {
-                return points;
-            }
-        }
-
-        public int QuantityPoints
-        {
-            get
-            {
-                return quantityPoints;
-            }
         }
     }
 }
