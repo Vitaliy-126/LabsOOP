@@ -12,7 +12,10 @@ namespace Program
         static void Main(string[] args)
         {
             Performance performance = new Performance("lol", "kek", "pituh", 1998);
-            Console.WriteLine($"{performance.Author}");
+            PosterPerformances posterPerformances = new PosterPerformances();
+            posterPerformances.AddPerfomance(performance);
+            posterPerformances.AddPerfomance(performance);
+            posterPerformances.DeletePerfomance("lol");
             Console.ReadKey();
         }
     }

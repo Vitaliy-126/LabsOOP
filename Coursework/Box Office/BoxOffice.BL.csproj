@@ -43,14 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controller\BoxOfficeController.cs" />
-    <Compile Include="Controller\PerformanceController.cs" />
-    <Compile Include="Controller\PosterPerformancesController.cs" />
-    <Compile Include="Model\BoxOffice.cs" />
-    <Compile Include="Model\Performance.cs" />
-    <Compile Include="Model\PosterPerformances.cs" />
+    <Compile Include="BoxOfficeController.cs" />
+    <Compile Include="BoxOffice.cs" />
+    <Compile Include="Performance.cs" />
+    <Compile Include="PosterPerformances.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Model\Ticket.cs" />
+    <Compile Include="Ticket.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

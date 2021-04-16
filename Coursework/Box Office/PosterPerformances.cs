@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BoxOffice
+﻿namespace BoxOffice
 {
     public class PosterPerformances
     {
@@ -54,34 +48,50 @@ namespace BoxOffice
             }
             return null;
         }
-
-        public void AddPerfomance(in Performance performance)
+        public void AddPerformance(in Performance performance)
         {
-            Performance[] tempPerformances = new Performance[performances.Length+1];
-            for(int i = 0; i < performances.Length; i++)
+            if (performances == null)
             {
-                tempPerformances[i] = performances[i];
+                performances = new Performance[] { performance };
             }
-            tempPerformances[tempPerformances.Length - 1] = performance;
-            performances = tempPerformances;
+            else
+            {
+                Performance[] tempPerformances = new Performance[performances.Length + 1];
+                for (int i = 0; i < performances.Length; i++)
+                {
+                    tempPerformances[i] = performances[i];
+                }
+                tempPerformances[tempPerformances.Length - 1] = performance;
+                performances = tempPerformances;
+            }
         }
-
-        public void DeletePerfomance(string title)
+        public void DeletePerformance(string title)
         {
             if (SearchForTitle(title, out int index) != null)
             {
                 Performance[] tempPerformances = new Performance[performances.Length - 1];
+                int correction = 0; 
                 for (int i = 0; i < performances.Length; i++)
                 {
                     if (i != index)
                     {
-                        tempPerformances[i] = performances[i];
+                        tempPerformances[i - correction] = performances[i];
+                    }
+                    else
+                    {
+                        correction++;
                     }
                 }
                 performances = tempPerformances;
             }
         }
-
+        public Performance this[int index]
+        {
+            get
+            {
+                return performances[index];
+            }
+        }
         private Performance[] performances;
     }
 }

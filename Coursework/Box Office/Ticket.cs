@@ -1,12 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BoxOffice
 {
-    class Ticket
+
+    public enum TicketStatus
+    {
+        InStock,
+        Booked,
+        Sold
+    }
+
+    public class Ticket
     {
         public Ticket(DateTime date, decimal price, int row, int seat, string hall)
         {
@@ -16,6 +20,7 @@ namespace BoxOffice
             Row = row;
             Seat = seat;
         }
+        public TicketStatus Status { get; set; }
         public DateTime Date { get; }
         public decimal Price { get; }
         public string Hall { get; }
