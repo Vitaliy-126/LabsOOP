@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1433
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoxOffice.CMD", "Program\BoxOffice.CMD.csproj", "{53B64EE0-EBC0-49AD-BD06-73173C03F7DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoxOffice.BL", "Box Office\BoxOffice.BL.csproj", "{191112D6-5F6E-419F-8E3E-4EA1CF82DFF5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{53B64EE0-EBC0-49AD-BD06-73173C03F7DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53B64EE0-EBC0-49AD-BD06-73173C03F7DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53B64EE0-EBC0-49AD-BD06-73173C03F7DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53B64EE0-EBC0-49AD-BD06-73173C03F7DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{191112D6-5F6E-419F-8E3E-4EA1CF82DFF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{191112D6-5F6E-419F-8E3E-4EA1CF82DFF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{191112D6-5F6E-419F-8E3E-4EA1CF82DFF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{191112D6-5F6E-419F-8E3E-4EA1CF82DFF5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6A367A65-EA89-4436-9F6F-9932B1506F43}
+	EndGlobalSection
+EndGlobal
