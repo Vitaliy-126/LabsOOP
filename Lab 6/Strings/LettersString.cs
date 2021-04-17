@@ -14,7 +14,7 @@ namespace Strings
             {
                 if (!char.IsLetter(this.str[i]))
                 {
-                    throw new Exception($"it is impossible to create a letters string");
+                    throw new Exception("it is impossible to create a letters string");
                 }
             }
         }
