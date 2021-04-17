@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Strings;
 
 namespace C_sharp
@@ -11,11 +7,17 @@ namespace C_sharp
     {
         static void Main(string[] args)
         {
-            LettersString letters = new LettersString("yaebal".ToCharArray());
-            MyString my = letters;
-            Console.WriteLine(letters.Str);
-            my = my.SubtractSymbol();
-            Console.WriteLine(my.Str);
+            Console.WriteLine("Введите цифровую строку:");
+            MyString str1 = new DigitalString(Console.ReadLine().ToCharArray());
+            Console.WriteLine("Введите буквенную строку:");
+            MyString str2 = new LettersString(Console.ReadLine().ToCharArray());
+            str1 = str1.SubtractSymbol();
+            Console.WriteLine("Строки после изменений:");
+            Console.Write(str1.GetLine());
+            Console.WriteLine(" : "+str1.GetLength());
+            str2 = str2.SubtractSymbol();
+            Console.Write(str2.GetLine());
+            Console.WriteLine(" : " + str2.GetLength());
             Console.ReadKey();
         }
     }
