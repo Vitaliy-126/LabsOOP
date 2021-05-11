@@ -1,6 +1,7 @@
 #include "Expression.h"
 #include <cmath>
-#include <exception>
+#include <stdexcept>
+#include "DivideByZeroException.h"
 
 Expression::Expression() {
     this->a = 0;
@@ -29,11 +30,11 @@ void Expression::SetD(double d) {
 double Expression::GetValue() {
     if (d / 4 <= 0)
     {
-        throw std::exception("the expression under the logarithm must be greater than zero");
+        throw std::logic_error("The expression under the logarithm must be greater than zero");
     }
     else if (a * a - 1 == 0)
     {
-        throw std::exception("division by zero occurred in the denominator");
+        throw DivideByZeroException("Division by zero occurred in the denominator");
     }
     else
     {

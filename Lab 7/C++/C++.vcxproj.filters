@@ -24,12 +24,18 @@
     <ClCompile Include="AdditionalFunctions.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="DivideByZeroException.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Expression.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="AdditionalFunctions.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="DivideByZeroException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

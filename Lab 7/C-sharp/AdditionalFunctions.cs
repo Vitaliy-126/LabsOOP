@@ -15,7 +15,6 @@ namespace C_sharp
         }
         public static void Menu(Expression expression)
         {
-            Console.WriteLine($"Программа для расчёта выражения: {expression}");
             bool exit = false;
             int choice;
             do

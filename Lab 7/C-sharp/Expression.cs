@@ -17,16 +17,13 @@ namespace C_sharp
         {
             if (D / 4 <= 0)
             {
-                throw new LogarithmException("the expression under the logarithm must be greater than zero");
+                throw new ArithmeticException("The expression under the logarithm must be greater than zero");
             }
             else if (A * A - 1 == 0)
             {
-                throw new DivideByZeroException("division by zero occurred in the denominator");
+                throw new DivideByZeroException("Division by zero occurred in the denominator");
             }
-            else
-            {
-                return (2 * C - Math.Log10(D / 4)) / (A * A - 1);
-            }
+            return (2 * C - Math.Log10(D / 4)) / (A * A - 1);
         }
         public double A { get; set; }
         public double C { get; set; }
