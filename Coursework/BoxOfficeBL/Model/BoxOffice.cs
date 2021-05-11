@@ -68,6 +68,7 @@ namespace BoxOfficeBL.Model
     {
         public event PerformanceHandler PerformanceAdded;
         public event PerformanceHandler PerformanceDeleted;
+        public event TicketHandler TicketSold;
         public BoxOffice()
         {
             InShow = new Dictionary<DateTime, List<PerformanceTickets>>();
@@ -168,8 +169,9 @@ namespace BoxOfficeBL.Model
                 InShow.Remove(date);
             }
         }
-        public bool SellTicket(Performance performance, DateTime dateTime, int row, int seat)
+        public bool SellTicket(Performance performance, DateTime dateTime, int row, int seat, string communicationMedium)
         {
+            DateTime date = dateTime.Date;
             #region verify the conditions
             if (performance == null)
             {
@@ -185,33 +187,43 @@ namespace BoxOfficeBL.Model
             {
                 throw new ArgumentException("Row numbering starts from 1");
             }
-            
-            #endregion
-            DateTime date = dateTime.Date;
-            if (InShow.ContainsKey(date))
+
+            if (!InShow.ContainsKey(date))
             {
-                var crtPerfTickets = InShow[date].Find(performanceTickets => performanceTickets.Performance == performance && performanceTickets.DateTime == dateTime);
-                if (crtPerfTickets != null && crtPerfTickets.AvailableTickets!=0)
-                {
-                    crtPerfTickets.UpdateTickets();
-                    foreach (Ticket ticket in crtPerfTickets.Tickets)
-                    {
-                        if (ticket.Row == row && ticket.Seat == seat && ticket.DateTime == dateTime)
-                            if (ticket.Status != TicketStatus.Sold && ticket.Status != TicketStatus.Booked)
-                            {
-                                ticket.Status = TicketStatus.Sold;
-                                crtPerfTickets.AvailableTickets--;
-                                return true;
-                            }
-                    }
-                    return false;
-                }
-                else throw new NotFoundException("There are no tickets for this performance.");
+                throw new NotFoundException("There are no performances on this date.");
             }
-            else throw new NotFoundException("There are no performances on this date.");
+
+            if (string.IsNullOrWhiteSpace(communicationMedium))
+            {
+                throw new ArgumentNullException("Communication medium cannot be empty or null", nameof(communicationMedium));
+            }
+            #endregion
+            var crtPerfTickets = InShow[date].Find(performanceTickets => performanceTickets.Performance == performance && performanceTickets.DateTime == dateTime);
+            if (crtPerfTickets != null && crtPerfTickets.AvailableTickets!=0)
+            {
+                crtPerfTickets.UpdateTickets();
+                foreach (Ticket ticket in crtPerfTickets.Tickets)
+                {
+                    if (ticket.Row == row && ticket.Seat == seat && ticket.DateTime == dateTime)
+                        if (ticket.Status != TicketStatus.Sold && ticket.Status != TicketStatus.Booked)
+                        {
+                            ticket.Status = TicketStatus.Sold;
+                            crtPerfTickets.AvailableTickets--;
+                            if (TicketSold != null)
+                            {
+                                TicketEventArgs args = new TicketEventArgs(ticket, communicationMedium);
+                                TicketSold(this, args);
+                            }
+                            return true;
+                        }
+                }
+                return false;
+            }
+            else throw new NotFoundException("There are no tickets for this performance.");
         }
         public bool BookTicket(Performance performance, DateTime dateTime, int row, int seat, ClientInfo clientInfo)
         {
+            DateTime date = dateTime.Date;
             #region verify the conditions
             if (performance == null)
             {
@@ -232,30 +244,30 @@ namespace BoxOfficeBL.Model
             {
                 throw new ArgumentException("Row numbering starts from 1");
             }
-            #endregion
-            DateTime date = dateTime.Date;
-            if (InShow.ContainsKey(date))
+
+            if (!InShow.ContainsKey(date))
             {
-                var crtPerfTickets = InShow[date].Find(performanceTickets => performanceTickets.Performance == performance && performanceTickets.DateTime == dateTime);
-                if (crtPerfTickets != null && crtPerfTickets.AvailableTickets != 0)
-                {
-                    crtPerfTickets.UpdateTickets();
-                    foreach (Ticket ticket in crtPerfTickets.Tickets)
-                    {
-                        if (ticket.Row == row && ticket.Seat == seat && ticket.DateTime == dateTime)
-                            if (ticket.Status != TicketStatus.Sold && ticket.Status != TicketStatus.Booked)
-                            {
-                                ticket.Status = TicketStatus.Booked;
-                                crtPerfTickets.bookings.Add(new Booking(clientInfo, ticket, 1));
-                                crtPerfTickets.AvailableTickets--;
-                                return true;
-                            }
-                    }
-                    return false;
-                }
-                else throw new NotFoundException("There are no tickets for this performance.");
+                throw new NotFoundException("There are no performances on this date.");
             }
-            else throw new NotFoundException("There are no performances on this date.");
+            #endregion
+            var crtPerfTickets = InShow[date].Find(performanceTickets => performanceTickets.Performance == performance && performanceTickets.DateTime == dateTime);
+            if (crtPerfTickets != null && crtPerfTickets.AvailableTickets != 0)
+            {
+                crtPerfTickets.UpdateTickets();
+                foreach (Ticket ticket in crtPerfTickets.Tickets)
+                {
+                    if (ticket.Row == row && ticket.Seat == seat && ticket.DateTime == dateTime)
+                        if (ticket.Status != TicketStatus.Sold && ticket.Status != TicketStatus.Booked)
+                        {
+                            ticket.Status = TicketStatus.Booked;
+                            crtPerfTickets.bookings.Add(new Booking(clientInfo, ticket, 1));
+                            crtPerfTickets.AvailableTickets--;
+                            return true;
+                        }
+                }
+                return false;
+            }
+            else throw new NotFoundException("There are no tickets for this performance.");
         }
         public bool SellReservation(ClientInfo clientInfo)
         {
@@ -273,6 +285,11 @@ namespace BoxOfficeBL.Model
                     {
                         performanceTickets.UpdateTickets();
                         booking.Ticket.Status = TicketStatus.Sold;
+                        if (TicketSold != null)
+                        {
+                            TicketEventArgs args = new TicketEventArgs(booking.Ticket, booking.ClientInfo.Email);
+                            TicketSold(this, args);
+                        }
                         performanceTickets.bookings.Remove(booking);
                         return true;
                     }
@@ -338,9 +355,9 @@ namespace BoxOfficeBL.Model
                         return perfTickets.Seats(perfTickets.Hall.QtyRows, perfTickets.Hall.QtySeatsInRow);
                     }
                 }
+                throw new NotFoundException("There are no tickets for this performance.");
             }
-            else throw new NotFoundException("There are no tickets for this performance.");
-            return null;
+            else throw new NotFoundException("There are no performances on this date.");
         }
         
         private Dictionary<DateTime, List<PerformanceTickets>> InShow;
