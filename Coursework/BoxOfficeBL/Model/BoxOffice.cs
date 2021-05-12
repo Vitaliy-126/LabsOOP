@@ -31,11 +31,11 @@ namespace BoxOfficeBL.Model
             DateTime = dateTime;
             bookings = new List<Booking>();
         }
-        public int AvailableTickets { get; set; }
         public Performance Performance { get; }
         public IReadOnlyList<Ticket> Tickets { get; }
         public DateTime DateTime { get; }
         public Hall Hall { get; }
+        public int AvailableTickets { get; set; }
         public bool[,] Seats(int rows, int cols)
         {
             UpdateTickets();
@@ -73,7 +73,7 @@ namespace BoxOfficeBL.Model
         {
             InShow = new Dictionary<DateTime, List<PerformanceTickets>>();
         }
-        public void AddInShow(Performance performance, Hall hall, DateTime dateTime, decimal price)
+        public void AddInShow(Performance performance, Hall hall, DateTime dateTime, decimal Maxprice)
         {
             #region verify the conditions
             if (performance == null)
@@ -91,12 +91,13 @@ namespace BoxOfficeBL.Model
                 throw new ArgumentException("Unable to add tickets for a show on a past date", nameof(dateTime));
             }
 
-            if(price < 0)
+            if(Maxprice < 0)
             {
-                throw new ArgumentException("The ticket price cannot be negative", nameof(price));
+                throw new ArgumentException("The ticket price cannot be negative", nameof(Maxprice));
             }
             #endregion
             DateTime date = dateTime.Date;
+            decimal price = Maxprice;
             List<Ticket> tickets = new List<Ticket>();
             int row = 0,
                 seat = 1;
@@ -106,6 +107,14 @@ namespace BoxOfficeBL.Model
                 {
                     row++;
                     seat = 1;
+                    if (Math.Round(row/(double)hall.QtyRows,1) ==  0.3)
+                    {
+                        price -= Maxprice * 0.1m;
+                    }
+                    if(Math.Round(row / (double)hall.QtyRows, 1) == 0.8)
+                    {
+                        price -= Maxprice * 0.2m;
+                    }
                 }
                 tickets.Add(new Ticket(performance.Title, dateTime, price, row, seat));
                 seat++;
@@ -204,7 +213,7 @@ namespace BoxOfficeBL.Model
                 crtPerfTickets.UpdateTickets();
                 foreach (Ticket ticket in crtPerfTickets.Tickets)
                 {
-                    if (ticket.Row == row && ticket.Seat == seat && ticket.DateTime == dateTime)
+                    if (ticket.Row == row && ticket.Seat == seat)
                         if (ticket.Status != TicketStatus.Sold && ticket.Status != TicketStatus.Booked)
                         {
                             ticket.Status = TicketStatus.Sold;
@@ -221,7 +230,7 @@ namespace BoxOfficeBL.Model
             }
             else throw new NotFoundException("There are no tickets for this performance.");
         }
-        public bool BookTicket(Performance performance, DateTime dateTime, int row, int seat, ClientInfo clientInfo)
+        public bool BookTicket(Performance performance, DateTime dateTime, int row, int seat, ClientInfo clientInfo,int minutes)
         {
             DateTime date = dateTime.Date;
             #region verify the conditions
@@ -245,6 +254,11 @@ namespace BoxOfficeBL.Model
                 throw new ArgumentException("Row numbering starts from 1");
             }
 
+            if (minutes > 60)
+            {
+                throw new ArgumentException("Cannot be booked for more than 60 minutes");
+            }
+
             if (!InShow.ContainsKey(date))
             {
                 throw new NotFoundException("There are no performances on this date.");
@@ -256,11 +270,11 @@ namespace BoxOfficeBL.Model
                 crtPerfTickets.UpdateTickets();
                 foreach (Ticket ticket in crtPerfTickets.Tickets)
                 {
-                    if (ticket.Row == row && ticket.Seat == seat && ticket.DateTime == dateTime)
+                    if (ticket.Row == row && ticket.Seat == seat)
                         if (ticket.Status != TicketStatus.Sold && ticket.Status != TicketStatus.Booked)
                         {
                             ticket.Status = TicketStatus.Booked;
-                            crtPerfTickets.bookings.Add(new Booking(clientInfo, ticket, 1));
+                            crtPerfTickets.bookings.Add(new Booking(clientInfo, ticket, minutes));
                             crtPerfTickets.AvailableTickets--;
                             return true;
                         }
@@ -285,6 +299,7 @@ namespace BoxOfficeBL.Model
                     {
                         performanceTickets.UpdateTickets();
                         booking.Ticket.Status = TicketStatus.Sold;
+                        performanceTickets.AvailableTickets--;
                         if (TicketSold != null)
                         {
                             TicketEventArgs args = new TicketEventArgs(booking.Ticket, booking.ClientInfo.Email);
