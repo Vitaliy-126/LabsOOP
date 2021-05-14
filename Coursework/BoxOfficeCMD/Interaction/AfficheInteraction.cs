@@ -39,7 +39,7 @@ namespace BoxOfficeCMD.Interaction
                             Console.WriteLine("\t\t\tАфиша представлений на данный момент:");
                             foreach (Poster poster in posterPerformances.Posters)
                             {
-                                Console.WriteLine($"\t{poster}\nУ театрах с {poster.StartDate:M}.");
+                                Console.WriteLine($"\t{AdditionalFunctions.StrPerformance(poster.Performance)}\nУ театрах с {poster.StartDate:M}.");
                             }
                             break;
                         case 2:
@@ -50,7 +50,7 @@ namespace BoxOfficeCMD.Interaction
                             Console.WriteLine("Результаты:");
                             foreach (Poster poster in posterPerformances.SearchForAuthor(author))
                             {
-                                Console.WriteLine($"\t{poster}\nУ театрах с {poster.StartDate:M}.");
+                                Console.WriteLine($"\t{AdditionalFunctions.StrPerformance(poster.Performance)}\nУ театрах с {poster.StartDate:M}.");
                             }
                             break;
                         case 3:
@@ -61,7 +61,7 @@ namespace BoxOfficeCMD.Interaction
                             Console.WriteLine("Результаты:");
                             foreach (Poster poster in posterPerformances.SearchForTitle(title))
                             {
-                                Console.WriteLine($"\t{poster}\nУ театрах с {poster.StartDate:M}.");
+                                Console.WriteLine($"\t{AdditionalFunctions.StrPerformance(poster.Performance)}\nУ театрах с {poster.StartDate:M}.");
                             }
                             break;
                         case 4:
@@ -72,7 +72,7 @@ namespace BoxOfficeCMD.Interaction
                             Console.WriteLine("Результаты:");
                             foreach (Poster poster in posterPerformances.SearchForGenre(genre))
                             {
-                                Console.WriteLine($"\t{poster}\nУ театрах с {poster.StartDate:M}.");
+                                Console.WriteLine($"\t{AdditionalFunctions.StrPerformance(poster.Performance)}\nУ театрах с {poster.StartDate:M}.");
                             }
                             break;
                         case 5:
@@ -83,7 +83,7 @@ namespace BoxOfficeCMD.Interaction
                             Console.WriteLine("Результаты:");
                             foreach (Poster poster in posterPerformances.SearchForYear(year))
                             {
-                                Console.WriteLine($"\t{poster}\nУ театрах с {poster.StartDate:M}.");
+                                Console.WriteLine($"\t{AdditionalFunctions.StrPerformance(poster.Performance)}\nУ театрах с {poster.StartDate:M}.");
                             }
                             break;
                         default:
