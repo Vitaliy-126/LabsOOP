@@ -51,7 +51,7 @@ namespace BoxOfficeBL.Model
         }
         public override string ToString()
         {
-            return $"\"{Title}\"({Year}). {Author}. {Genre}. ";
+            return $"Title: \"{Title}\"({Year}). Author: {Author}. Genre: {Genre}. ";
         }
     }
 }
