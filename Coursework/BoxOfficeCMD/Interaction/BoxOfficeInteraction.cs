@@ -163,9 +163,15 @@ namespace BoxOfficeCMD.Interaction
                                     if (select == 1)
                                     {
                                         Console.Write("Ряд: ");
-                                        row = Convert.ToInt32(Console.ReadLine());
+                                        while (!int.TryParse(Console.ReadLine(), out row))
+                                        {
+                                            Console.Write("Вы ошиблись с вводом, повторите: ");
+                                        }
                                         Console.Write("Место: ");
-                                        seat = Convert.ToInt32(Console.ReadLine());
+                                        while (!int.TryParse(Console.ReadLine(), out seat))
+                                        {
+                                            Console.Write("Вы ошиблись с вводом, повторите: ");
+                                        }
                                         Console.WriteLine($"Цена билета составит: {boxOffice.GetTicketPrice(boxOffice[date, indexPerf], times[indexTime], row, seat)}");
                                         string choice;
                                         do
@@ -203,15 +209,25 @@ namespace BoxOfficeCMD.Interaction
                                             exit = true;
                                         }
                                     }
-                                    else Console.Clear();
+                                    else
+                                    {
+                                        Console.Clear();
+                                        exit = true;
+                                    }
                                 }
-                                catch (Exception ex)
+                                catch (ArgumentException argEx)
                                 {
                                     Console.ForegroundColor = ConsoleColor.Red;
-                                    Console.WriteLine(ex.Message);
+                                    Console.WriteLine(argEx.Message);
                                     Thread.Sleep(1000);
                                     Console.Clear();
                                     Console.ResetColor();
+                                }
+                                catch(FormatException formatEx)
+                                {
+                                    Console.WriteLine(formatEx.Message);
+                                    Console.Write("Введите правильный email: ");
+                                    email = Console.ReadLine();
                                 }
                             }
                             else
@@ -325,9 +341,15 @@ namespace BoxOfficeCMD.Interaction
                                     if (select == 1)
                                     {
                                         Console.Write("Ряд: ");
-                                        row = Convert.ToInt32(Console.ReadLine());
+                                        while (!int.TryParse(Console.ReadLine(), out row))
+                                        {
+                                            Console.Write("Вы ошиблись с вводом, повторите: ");
+                                        }
                                         Console.Write("Место: ");
-                                        seat = Convert.ToInt32(Console.ReadLine());
+                                        while (!int.TryParse(Console.ReadLine(), out seat))
+                                        {
+                                            Console.Write("Вы ошиблись с вводом, повторите: ");
+                                        }
                                         Console.WriteLine($"Цена билета составит: {boxOffice.GetTicketPrice(boxOffice[date, indexPerf], times[indexTime], row, seat)}");
                                         string choice;
                                         do
@@ -370,12 +392,16 @@ namespace BoxOfficeCMD.Interaction
                                             exit = true;
                                         }
                                     }
-                                    else Console.Clear();
+                                    else 
+                                    {
+                                        Console.Clear();
+                                        exit = true;
+                                    }
                                 }
-                                catch (Exception ex)
+                                catch (ArgumentException argEx)
                                 {
                                     Console.ForegroundColor = ConsoleColor.Red;
-                                    Console.WriteLine(ex.Message);
+                                    Console.WriteLine(argEx.Message);
                                     Thread.Sleep(1000);
                                     Console.Clear();
                                     Console.ResetColor();
