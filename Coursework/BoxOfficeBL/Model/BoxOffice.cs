@@ -103,7 +103,7 @@ namespace BoxOfficeBL.Model
                 throw new ArgumentException("Unable to add tickets for a show on a past date", nameof(dateTime));
             }
 
-            if(Maxprice < 0)
+            if (Maxprice < 0)
             {
                 throw new ArgumentException("The ticket price cannot be negative", nameof(Maxprice));
             }
@@ -147,16 +147,16 @@ namespace BoxOfficeBL.Model
                 PerformanceAdded(this, args);
             }
         }
-        public void DeleteInShow(Performance performance, DateTime date)
+        public void DeleteInShow(Performance performance, DateTime dateTime)
         {
             if (performance == null)
             {
                 throw new ArgumentNullException("Performance cannot be null.", nameof(performance));
             }
-            date = date.Date;
+            DateTime date = dateTime.Date;
             if (InShow.ContainsKey(date))
             {
-                InShow[date].RemoveAll(performances => performances.Performance.Equals(performance));
+                InShow[date].RemoveAll(performanceTickets => performanceTickets.DateTime==dateTime&&performanceTickets.Performance.Equals(performance));
                 if (InShow[date].Count == 0)
                 {
                     InShow.Remove(date);
@@ -169,7 +169,7 @@ namespace BoxOfficeBL.Model
                 {
                     foreach (PerformanceTickets performanceTickets in performancesTickets)
                     {
-                        if (performanceTickets.DateTime.Date != date && performanceTickets.Performance.Equals(performance))
+                        if (performanceTickets.DateTime != dateTime && performanceTickets.Performance.Equals(performance))
                         {
                             found = true;
                         }
@@ -180,14 +180,6 @@ namespace BoxOfficeBL.Model
                     PerformanceEventArgs args = new PerformanceEventArgs(performance, date);
                     PerformanceDeleted(this, args);
                 }
-            }
-        }
-        public void DeleteInShow(DateTime date)
-        {
-            date = date.Date;
-            if (InShow.ContainsKey(date))
-            {
-                InShow.Remove(date);
             }
         }
         public bool SellTicket(Performance performance, DateTime dateTime, int row, int seat, string communicationMedium)
@@ -226,15 +218,15 @@ namespace BoxOfficeBL.Model
                 foreach (Ticket ticket in crtPerfTickets.Tickets)
                 {
                     if (ticket.Row == row && ticket.Seat == seat)
-                        if (ticket.Status != TicketStatus.Sold && ticket.Status != TicketStatus.Booked)
+                        if (ticket.Status==TicketStatus.InStock)
                         {
-                            ticket.Status = TicketStatus.Sold;
-                            crtPerfTickets.availableTickets--;
                             if (TicketSold != null)
                             {
                                 TicketEventArgs args = new TicketEventArgs(ticket, communicationMedium);
                                 TicketSold(this, args);
                             }
+                            ticket.Status = TicketStatus.Sold;
+                            crtPerfTickets.availableTickets--;
                             return true;
                         }
                 }
@@ -283,7 +275,7 @@ namespace BoxOfficeBL.Model
                 foreach (Ticket ticket in crtPerfTickets.Tickets)
                 {
                     if (ticket.Row == row && ticket.Seat == seat)
-                        if (ticket.Status != TicketStatus.Sold && ticket.Status != TicketStatus.Booked)
+                        if (ticket.Status == TicketStatus.InStock)
                         {
                             ticket.Status = TicketStatus.Booked;
                             crtPerfTickets.bookings.Add(new Booking(clientInfo, ticket, minutes));
