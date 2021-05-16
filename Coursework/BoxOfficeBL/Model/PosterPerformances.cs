@@ -9,28 +9,6 @@ namespace BoxOfficeBL.Model
         {
             posters = new List<Poster>();
         }
-        public PosterPerformances(Poster[] posters) : this()
-        {
-            if (posters == null)
-            {
-                throw new ArgumentNullException("Posters cannot be null", nameof(posters));
-            }
-            foreach (Poster poster in posters)
-            {
-                AddPoster(poster);
-            }
-        }
-        public PosterPerformances(List<Poster> posters) : this()
-        {
-            if (posters == null)
-            {
-                throw new ArgumentNullException("Posters cannot be null", nameof(posters));
-            }
-            foreach (Poster poster in posters)
-            {
-                AddPoster(poster);
-            }
-        }
         public IReadOnlyList<Poster> SearchForTitle(string title)
         {
             if (title == null)
