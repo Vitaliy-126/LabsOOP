@@ -32,13 +32,13 @@ namespace BoxOfficeBL.Model
                 throw new ArgumentNullException("Performance cannot be null.", nameof(performance));
             }
 
-            if (startDate < DateTime.Now.Date)
+            if (startDate.Date < DateTime.Now.Date)
             {
                 throw new ArgumentException("Start date cannot be less than current", nameof(startDate));
             }
             #endregion
             Performance = performance;
-            StartDate = startDate;
+            StartDate = startDate.Date;
             Description = "No description";
         }
         public override string ToString()
