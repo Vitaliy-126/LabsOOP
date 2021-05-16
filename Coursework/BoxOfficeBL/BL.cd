@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BoxOfficeBL.Model.Booking">
+    <Position X="13.5" Y="1.5" Width="1.5" />
+    <AssociationLine Name="ClientInfo" Type="BoxOfficeBL.Model.ClientInfo">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.06" Y="-0.266" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Ticket" Type="BoxOfficeBL.Model.Ticket">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="2.384" Y="1.43" Height="0.182" Width="0.653" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABQCAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Booking.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ClientInfo" />
+      <Property Name="Ticket" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BoxOfficeBL.Model.PerformanceTickets">
+    <Position X="11.25" Y="4" Width="1.5" />
+    <AssociationLine Name="Performance" Type="BoxOfficeBL.Model.Performance">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.079" Y="-0.284" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Tickets" Type="BoxOfficeBL.Model.Ticket" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.75" Y="5.803" />
+        <Point X="17.246" Y="5.803" />
+        <Point X="17.246" Y="5.375" />
+        <Point X="17.75" Y="5.375" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="4.322" Y="-0.698" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Hall" Type="BoxOfficeBL.Model.Hall">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.773" Y="1.179" Height="0.182" Width="0.645" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="bookings" Type="BoxOfficeBL.Model.Booking" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.75" Y="5.36" />
+        <Point X="14.125" Y="5.36" />
+        <Point X="14.125" Y="3.247" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.554" Y="2.168" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAIEAACAAAJgAAAAAAAAAAABQAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\BoxOffice.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Performance" />
+      <Property Name="Hall" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="bookings" />
+      <Property Name="Tickets" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BoxOfficeBL.Model.BoxOffice">
+    <Position X="8.75" Y="4.25" Width="1.5" />
+    <AssociationLine Name="this[System.DateTime, System.Int32]" Type="BoxOfficeBL.Model.Performance" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="9.5" Y="4.25" />
+        <Point X="9.5" Y="3.875" />
+        <Point X="4.688" Y="3.875" />
+        <Point X="4.688" Y="3.209" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-4.719" Y="0.736" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAABBAAACQgICAgAABAAAAAAAAAAAAUAAAgAAgE=</HashCode>
+      <FileName>Model\BoxOffice.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="this[System.DateTime, System.Int32]" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BoxOfficeBL.Model.ClientInfo">
+    <Position X="16" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAEgAAAAAQABAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\ClientInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BoxOfficeBL.Model.Hall">
+    <Position X="11.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAEAAAAAAQgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Hall.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BoxOfficeBL.Model.Performance">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAEAEgAIAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Performance.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BoxOfficeBL.Model.Poster">
+    <Position X="3.5" Y="4.25" Width="1.5" />
+    <AssociationLine Name="Performance" Type="BoxOfficeBL.Model.Performance">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.027" Y="0.831" Height="0.182" Width="1.062" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAEoAAAAAAAAAAAAJAAAAAAAEAAAAA=</HashCode>
+      <FileName>Model\Poster.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Performance" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BoxOfficeBL.Model.PosterPerformances">
+    <Position X="6.25" Y="4.25" Width="1.5" />
+    <AssociationLine Name="Posters" Type="BoxOfficeBL.Model.Poster">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.539" Y="-0.253" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="posters" Type="BoxOfficeBL.Model.Poster">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.541" Y="-0.247" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAACAAAAgAAAAAAIAAAAAAAIAAAABAAABEAAQ=</HashCode>
+      <FileName>Model\PosterPerformances.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="posters" />
+      <Property Name="Posters" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BoxOfficeBL.Model.Ticket">
+    <Position X="17.75" Y="3.25" Width="1.5" />
+    <AssociationLine Name="Status" Type="BoxOfficeBL.Model.TicketStatus">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.375" Y="-0.269" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAQAAAEAAAAAAQAAAAAAAAgQAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Ticket.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Status" />
+    </ShowAsAssociation>
+  </Class>
+  <Enum Name="BoxOfficeBL.Model.TicketStatus">
+    <Position X="20.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAACAABAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Ticket.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
