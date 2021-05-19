@@ -79,12 +79,17 @@ namespace BoxOfficeBL.Model
             {
                 throw new ArgumentNullException("Poster cannot be null", nameof(poster));
             }
-            foreach (Poster post in posters)
+            Poster currentPost = posters.Find(post => post.Equals(poster));
+            if (currentPost != null)
             {
-                if (post.Equals(poster))
+                foreach(DateTime date in poster.Dates)
                 {
-                    return false;
+                    if (!currentPost.Dates.Contains(date))
+                    {
+                        currentPost.Dates.Add(date);
+                    }
                 }
+                return false;
             }
             posters.Add(poster);
             return true;

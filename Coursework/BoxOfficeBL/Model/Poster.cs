@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace BoxOfficeBL.Model
 {
@@ -23,7 +24,7 @@ namespace BoxOfficeBL.Model
                 }
             }
         }
-        public DateTime StartDate { get; }
+        public List<DateTime> Dates { get; private set; }
         public Poster(Performance performance, DateTime startDate)
         {
             #region verify the conditions
@@ -38,8 +39,17 @@ namespace BoxOfficeBL.Model
             }
             #endregion
             Performance = performance;
-            StartDate = startDate.Date;
+            Dates = new List<DateTime>();
+            Dates.Add(startDate.Date);
             Description = "No description";
+        }
+        public void AddDate(DateTime date)
+        {
+            if (date.Date < DateTime.Now.Date)
+            {
+                throw new ArgumentException("Overdue date");
+            }
+            Dates.Add(date);
         }
         public override string ToString()
         {

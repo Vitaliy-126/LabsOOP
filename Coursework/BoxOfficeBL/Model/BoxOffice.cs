@@ -115,7 +115,7 @@ namespace BoxOfficeBL.Model
                 seat = 1;
             for (int i = 1; i <= hall.QtyRows*hall.QtySeatsInRow; i++)
             {
-                if (i % hall.QtySeatsInRow == 1)
+                if (i % hall.QtySeatsInRow == 1||i==1)
                 {
                     row++;
                     seat = 1;
@@ -220,13 +220,13 @@ namespace BoxOfficeBL.Model
                     if (ticket.Row == row && ticket.Seat == seat)
                         if (ticket.Status==TicketStatus.InStock)
                         {
+                            ticket.Status = TicketStatus.Sold;
+                            crtPerfTickets.availableTickets--;
                             if (TicketSold != null)
                             {
                                 TicketEventArgs args = new TicketEventArgs(ticket, communicationMedium);
                                 TicketSold(this, args);
                             }
-                            ticket.Status = TicketStatus.Sold;
-                            crtPerfTickets.availableTickets--;
                             return true;
                         }
                 }
@@ -234,7 +234,7 @@ namespace BoxOfficeBL.Model
             }
             else throw new NotFoundException("There are no tickets for this performance.");
         }
-        public bool BookTicket(Performance performance, DateTime dateTime, int row, int seat, ClientInfo clientInfo,int minutes)
+        public bool BookTicket(Performance performance, DateTime dateTime, int row, int seat, ClientInfo clientInfo,DateTime untilDateTime)
         {
             DateTime date = dateTime.Date;
             #region verify the conditions
@@ -258,11 +258,6 @@ namespace BoxOfficeBL.Model
                 throw new ArgumentException("Row numbering starts from 1");
             }
 
-            if (minutes > 60)
-            {
-                throw new ArgumentException("Cannot be booked for more than 60 minutes");
-            }
-
             if (!InShow.ContainsKey(date))
             {
                 throw new NotFoundException("There are no performances on this date.");
@@ -274,14 +269,16 @@ namespace BoxOfficeBL.Model
                 crtPerfTickets.UpdateTickets();
                 foreach (Ticket ticket in crtPerfTickets.Tickets)
                 {
-                    if (ticket.Row == row && ticket.Seat == seat)
-                        if (ticket.Status == TicketStatus.InStock)
+                    if (ticket.Row == row && ticket.Seat == seat && ticket.Status == TicketStatus.InStock) {
+                        if (crtPerfTickets.DateTime > untilDateTime)
                         {
                             ticket.Status = TicketStatus.Booked;
-                            crtPerfTickets.bookings.Add(new Booking(clientInfo, ticket, minutes));
+                            crtPerfTickets.bookings.Add(new Booking(clientInfo, ticket, untilDateTime));
                             crtPerfTickets.availableTickets--;
                             return true;
                         }
+                        else throw new ArgumentException("The date and time of the reservation cannot exceed the date and time of the performance");
+                    }
                 }
                 return false;
             }
@@ -336,7 +333,7 @@ namespace BoxOfficeBL.Model
             {
                 foreach (PerformanceTickets perfTickets in performancesTickets)
                 {
-                    if (!performances.Contains(perfTickets.Performance))
+                    if (!performances.Contains(perfTickets.Performance)&&perfTickets.DateTime>DateTime.Now)
                     {
                         performances.Add(perfTickets.Performance);
                     }
@@ -356,7 +353,7 @@ namespace BoxOfficeBL.Model
             {
                 foreach (PerformanceTickets perfTickets in performancesTickets)
                 {
-                    if (perfTickets.Performance.Equals(performance)&&perfTickets.DateTime>=DateTime.Now)
+                    if (perfTickets.Performance.Equals(performance)&&perfTickets.DateTime>DateTime.Now)
                     {
                         times.Add(perfTickets.DateTime);
                     }

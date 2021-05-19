@@ -9,21 +9,23 @@ namespace BoxOfficeCMD.Interaction
     {
         public static void Menu(BoxOffice boxOffice)
         {
-            DateTime date = DateTime.Now.Date;
             int choice;
             bool ex = false;
             do
             {
                 Console.WriteLine("Меню:");
                 Console.WriteLine("0. Выйти с кассы");
-                Console.WriteLine("1. Показать сегодняшние сеансы:");
+                Console.WriteLine("1. Показать сегодняшние представления:");
                 Console.WriteLine("2. Купить билет");
                 Console.WriteLine("3. Забронировать билет");
                 Console.WriteLine("4. Купить забронированный билет");
                 Console.Write("Ваш выбор: ");
                 try
                 {
-                    choice = Convert.ToInt32(Console.ReadLine());
+                    while (!int.TryParse(Console.ReadLine(), out choice))
+                    {
+                        Console.Write("Вы ошиблись с вводом, повторите: ");
+                    }
                     switch (choice)
                     {
                         case 0:
@@ -33,8 +35,8 @@ namespace BoxOfficeCMD.Interaction
                         case 1:
                             Console.Clear();
                             Console.WriteLine();
-                            Console.WriteLine("\t\t\tСеансы на сегодня: ");
-                            foreach (Performance performance in boxOffice.AvailablePerformances(date))
+                            Console.WriteLine("\t\t\tПредставления на сегодня: ");
+                            foreach (Performance performance in boxOffice.AvailablePerformances(DateTime.Now.Date))
                             {
                                 Console.WriteLine($"\t{AdditionalFunctions.StrPerformance(performance)}");
                             }
@@ -116,7 +118,7 @@ namespace BoxOfficeCMD.Interaction
                         bool exit = false;
                         bool places = false;
                         Console.Write("Введите желаемое количество билетов: ");
-                        while (!int.TryParse(Console.ReadLine(), out quantityTickets))
+                        while (!int.TryParse(Console.ReadLine(), out quantityTickets)||quantityTickets<=0)
                         {
                             Console.Write("Вы ошиблись с вводом, повторите: ");
                         }
@@ -185,6 +187,11 @@ namespace BoxOfficeCMD.Interaction
                                             {
                                                 Console.Write("Введите email: ");
                                                 email = Console.ReadLine();
+                                                while (!AdditionalFunctions.IsValidEmail(email))
+                                                {
+                                                    Console.Write("Некоректный email, попробуйте ещё раз: ");
+                                                    email = Console.ReadLine();
+                                                }
                                             }
 
                                             if (boxOffice.SellTicket(boxOffice[date, indexPerf], times[indexTime], row, seat, email))
@@ -206,7 +213,6 @@ namespace BoxOfficeCMD.Interaction
                                         else
                                         {
                                             Console.Clear();
-                                            exit = true;
                                         }
                                     }
                                     else
@@ -223,16 +229,10 @@ namespace BoxOfficeCMD.Interaction
                                     Console.Clear();
                                     Console.ResetColor();
                                 }
-                                catch(FormatException formatEx)
-                                {
-                                    Console.WriteLine(formatEx.Message);
-                                    Console.Write("Введите правильный email: ");
-                                    email = Console.ReadLine();
-                                }
                             }
                             else
                             {
-                                Console.WriteLine("Нету доступных мест.");
+                                Console.WriteLine("На эту дату нету доступных представлений.");
                                 Thread.Sleep(2000);
                                 Console.Clear();
                                 exit = true;
@@ -253,9 +253,9 @@ namespace BoxOfficeCMD.Interaction
         }
         static void Book(BoxOffice boxOffice)
         {
-            int indexPerf, row, seat, minutes;
+            int indexPerf, row, seat;
             ClientInfo clientInfo;
-            DateTime date;
+            DateTime date, untilDateTime;
             Console.Write("Введите желаемую дату(dd.MM.yyyy): ");
             while (!DateTime.TryParse(Console.ReadLine(), out date))
             {
@@ -301,88 +301,101 @@ namespace BoxOfficeCMD.Interaction
                         Console.Clear();
                         bool[,] seats = boxOffice.SeatsPerformance(times[indexTime], boxOffice[date, indexPerf]);
                         Console.Clear();
-                        Console.SetCursorPosition(seats.GetLength(1) * 2, 0);
-                        Console.WriteLine("Зал");
-                        Console.SetCursorPosition(0, 1);
-                        for (int i = 0; i < seats.GetLength(0); i++)
-                        {
-                            for (int j = 0; j < seats.GetLength(1); j++)
-                            {
-                                if (seats[i, j] == true)
-                                {
-                                    Console.ForegroundColor = ConsoleColor.Green;
-                                    Console.Write("   #");
-                                    places = true;
-                                }
-                                else
-                                {
-                                    Console.ForegroundColor = ConsoleColor.Red;
-                                    Console.Write("   #");
-                                }
-                            }
-                            Console.WriteLine();
-                        }
-                        Console.ResetColor();
                         bool exit = false;
-                        if (places)
-                        {
                             do
                             {
                                 try
                                 {
-                                    int select;
-                                    Console.WriteLine("0. Покинуть меню бронирования");
-                                    Console.WriteLine("1. Выбрать ряд и место");
-                                    Console.Write("Ваш выбор: ");
-                                    while (!int.TryParse(Console.ReadLine(), out select) || select != 0 && select != 1)
+                                    Console.SetCursorPosition(seats.GetLength(1) * 2, 0);
+                                    Console.WriteLine("Зал");
+                                    Console.SetCursorPosition(0, 1);
+                                    for (int i = 0; i < seats.GetLength(0); i++)
                                     {
-                                        Console.Write("Вы ошиблись с вводом, повторите: ");
-                                    }
-                                    if (select == 1)
-                                    {
-                                        Console.Write("Ряд: ");
-                                        while (!int.TryParse(Console.ReadLine(), out row))
+                                        for (int j = 0; j < seats.GetLength(1); j++)
                                         {
-                                            Console.Write("Вы ошиблись с вводом, повторите: ");
-                                        }
-                                        Console.Write("Место: ");
-                                        while (!int.TryParse(Console.ReadLine(), out seat))
-                                        {
-                                            Console.Write("Вы ошиблись с вводом, повторите: ");
-                                        }
-                                        Console.WriteLine($"Цена билета составит: {boxOffice.GetTicketPrice(boxOffice[date, indexPerf], times[indexTime], row, seat)}");
-                                        string choice;
-                                        do
-                                        {
-                                            Console.Write("Подтвердить(Yes/No): ");
-                                            choice = Console.ReadLine();
-                                        } while (choice.ToLower() != "yes" && choice.ToLower() != "no");
-                                        if (choice == "yes")
-                                        {
-                                            string name, surname, email;
-                                            Console.WriteLine("Чтобы забронировать билет введите дополнительные данные:");
-                                            Console.Write("Ваше имя: ");
-                                            name = Console.ReadLine();
-                                            Console.Write("Ваша Фамилия: ");
-                                            surname = Console.ReadLine();
-                                            Console.Write("Ваш email: ");
-                                            email = Console.ReadLine();
-                                            clientInfo = new ClientInfo(name, surname, email);
-                                            Console.Write("Введите длительность брони(у минутах): ");
-                                            minutes = Convert.ToInt32(Console.ReadLine());
-                                            if (boxOffice.BookTicket(boxOffice[date, indexPerf], times[indexTime], row, seat, clientInfo, minutes))
+                                            if (seats[i, j] == true)
                                             {
-                                                Console.Clear();
-                                                Console.WriteLine("Билет забронирован успешно");
-                                                exit = true;
-                                                Thread.Sleep(1000);
-                                                Console.Clear();
+                                                Console.ForegroundColor = ConsoleColor.Green;
+                                                Console.Write("   #");
+                                                places = true;
                                             }
                                             else
                                             {
-                                                Console.Clear();
-                                                Console.WriteLine("Билет не удалось забронировать");
-                                                Thread.Sleep(1000);
+                                                Console.ForegroundColor = ConsoleColor.Red;
+                                                Console.Write("   #");
+                                            }
+                                        }
+                                        Console.WriteLine();
+                                    }
+                                    Console.ResetColor();
+                                    if (places)
+                                    {
+                                        int select;
+                                        Console.WriteLine("0. Покинуть меню бронирования");
+                                        Console.WriteLine("1. Выбрать ряд и место");
+                                        Console.Write("Ваш выбор: ");
+                                        while (!int.TryParse(Console.ReadLine(), out select) || select != 0 && select != 1)
+                                        {
+                                            Console.Write("Вы ошиблись с вводом, повторите: ");
+                                        }
+                                        if (select == 1)
+                                        {
+                                            Console.Write("Ряд: ");
+                                            while (!int.TryParse(Console.ReadLine(), out row))
+                                            {
+                                                Console.Write("Вы ошиблись с вводом, повторите: ");
+                                            }
+                                            Console.Write("Место: ");
+                                            while (!int.TryParse(Console.ReadLine(), out seat))
+                                            {
+                                                Console.Write("Вы ошиблись с вводом, повторите: ");
+                                            }
+                                            Console.WriteLine($"Цена билета составит: {boxOffice.GetTicketPrice(boxOffice[date, indexPerf], times[indexTime], row, seat)}");
+                                            string choice;
+                                            do
+                                            {
+                                                Console.Write("Подтвердить(Yes/No): ");
+                                                choice = Console.ReadLine();
+                                            } while (choice.ToLower() != "yes" && choice.ToLower() != "no");
+                                            if (choice == "yes")
+                                            {
+                                                string name, surname, email;
+                                                Console.WriteLine("Чтобы забронировать билет введите дополнительные данные:");
+                                                Console.Write("Ваше имя: ");
+                                                name = Console.ReadLine();
+                                                Console.Write("Ваша Фамилия: ");
+                                                surname = Console.ReadLine();
+                                                Console.Write("Ваш email: ");
+                                                email = Console.ReadLine();
+                                                while (!AdditionalFunctions.IsValidEmail(email))
+                                                {
+                                                    Console.Write("Некоректный email, попробуйте ещё раз: ");
+                                                    email = Console.ReadLine();
+                                                }
+                                                clientInfo = new ClientInfo(name, surname, email);
+                                                Console.Write("Введите дату и время окончания брони(MM.dd.yyyy HH: mm): ");
+                                                while (!DateTime.TryParse(Console.ReadLine(), out untilDateTime))
+                                                {
+                                                    Console.Write("Неправильный формат, попробуйте ещё раз: ");
+                                                }
+                                                if (boxOffice.BookTicket(boxOffice[date, indexPerf], times[indexTime], row, seat, clientInfo, untilDateTime))
+                                                {
+                                                    Console.Clear();
+                                                    Console.WriteLine("Билет забронирован успешно");
+                                                    exit = true;
+                                                    Thread.Sleep(1000);
+                                                    Console.Clear();
+                                                }
+                                                else
+                                                {
+                                                    Console.Clear();
+                                                    Console.WriteLine("Билет не удалось забронировать");
+                                                    Thread.Sleep(1000);
+                                                    Console.Clear();
+                                                }
+                                            }
+                                            else
+                                            {
                                                 Console.Clear();
                                             }
                                         }
@@ -392,10 +405,12 @@ namespace BoxOfficeCMD.Interaction
                                             exit = true;
                                         }
                                     }
-                                    else 
+                                    else
                                     {
-                                        Console.Clear();
+                                        Console.WriteLine("Нету доступных мест.");
+                                        Thread.Sleep(2000);
                                         exit = true;
+                                        Console.Clear();
                                     }
                                 }
                                 catch (ArgumentException argEx)
@@ -407,13 +422,6 @@ namespace BoxOfficeCMD.Interaction
                                     Console.ResetColor();
                                 }
                             } while (!exit);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Нету доступных мест.");
-                            Thread.Sleep(2000);
-                            Console.Clear();
-                        }
                     }
                     else Console.Clear();
                 }
@@ -422,7 +430,7 @@ namespace BoxOfficeCMD.Interaction
             else
             {
                 Console.Clear();
-                Console.WriteLine("На даный момент нет доступных сеансов");
+                Console.WriteLine("На эту дату нету доступных представлений.");
                 Thread.Sleep(2000);
                 Console.Clear();
             }

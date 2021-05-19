@@ -9,7 +9,7 @@
     </AssociationLine>
     <AssociationLine Name="Ticket" Type="BoxOfficeBL.Model.Ticket">
       <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
-        <Position X="2.384" Y="1.43" Height="0.182" Width="0.653" />
+        <Position X="2.399" Y="0.949" Height="0.182" Width="0.653" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
@@ -25,7 +25,7 @@
     <Position X="11.25" Y="4" Width="1.5" />
     <AssociationLine Name="Performance" Type="BoxOfficeBL.Model.Performance">
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.079" Y="-0.284" />
+        <Position X="5.224" Y="-0.998" />
       </MemberNameLabel>
     </AssociationLine>
     <AssociationLine Name="Tickets" Type="BoxOfficeBL.Model.Ticket" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
@@ -117,7 +117,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAgAAAEoAAAAAAAAAAAAJAAAAAAAEAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAggAAAEoAAAAAAAAAAAAJAAAAAAAAACAAA=</HashCode>
       <FileName>Model\Poster.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

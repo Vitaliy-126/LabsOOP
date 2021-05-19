@@ -12,15 +12,18 @@ namespace BoxOfficeCMD.Interaction
             bool exit = false;
             do
             {
-                try
-                {
+                    Console.WriteLine("\t\tВас приветствует театральная касса села Борки!");
+                    Console.WriteLine();
                     Console.WriteLine("Меню:");
                     Console.WriteLine("0. Завершить програму");
                     Console.WriteLine("1. Перейти в афишу представлений");
                     Console.WriteLine("2. Перейти в кассу");
                     Console.Write("Ваш выбор: ");
-                    choice = int.Parse(Console.ReadLine());
-                    switch (choice)
+                    while (!int.TryParse(Console.ReadLine(), out choice))
+                    {
+                        Console.Write("Вы ошиблись с вводом, повторите: ");
+                    }
+                switch (choice)
                     {
                         case 0:
                             exit = true;
@@ -43,15 +46,6 @@ namespace BoxOfficeCMD.Interaction
                             Console.Clear();
                             break;
                     }
-                }
-                catch (Exception ex)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(ex.Message);
-                    Thread.Sleep(1500);
-                    Console.Clear();
-                    Console.ResetColor();
-                }
             } while (!exit);
         }
     }
